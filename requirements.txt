@@ -1,0 +1,8 @@
+aiogram==3.0.0
+celery==5.3.4
+peewee==3.16.3
+prompt-toolkit==3.0.39
+psycopg2-binary==2.9.7
+python-dotenv==1.0.0
+yarl==1.9.2
+redis==5.0.0

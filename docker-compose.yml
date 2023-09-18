@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    restart: always
+    container_name: 'app_redis'
+    command: redis-server
+    ports:
+      - '6379:6379'
+  bot:
+    build: .
+    restart: always
+    container_name: 'app_bot'
+    command: python bot.py
+    volumes:
+      - .:/test
+    ports:
+      - '8000:8000'
+  celery:
+    build: .
+    container_name: 'app_celery'
+    command: celery --app celery_app.celery worker --pool=threads --loglevel=INFO
+    volumes:
+      - .:/test
+    links:
+      - redis
+    depends_on:
+      - redis
+
+  pg:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: 'testdb'
+      POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'test'
+    ports:
+      - "5432:5432"
